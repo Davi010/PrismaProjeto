@@ -1,0 +1,22 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Pessoa{
+  id Int @id @default(autoincrement()) //Estou criando um atributo id do tipo inteiro que é nossa chave primária(@id) e passamos como valor padrão o autoincrement para que para cada novo valor seja adicionado +1 ao atributo id
+  email String @unique //Atributo email do tipo string e de valor unico(@unique),ou seja não terá duplicatas
+  name String? //Atributo nome do tipo string onde não é obrigatório ter(?)
+}
+
+//npx prisma generate:Gera um modelo em typescript 
+//import { PrismaClient } from '@prisma/client' const prisma = new PrismaClient()
+//import { PrismaClient } from '@prisma/client/edge'const prisma = new PrismaClient()
+
