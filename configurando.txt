@@ -1,0 +1,65 @@
+1-Crie um diretório e vá para sua raiz
+2-Inicialize seu projeto typescript npm init -y
+3-Instale o typescript ts-node @types/node --save-dev
+4-Inicialize o typescriptn npx tsc --init
+5-Instale prisma cli como dependência do projeto npm install prisma --save-dev
+6-Inicie o esquema relacional do prisma npx prisma init --datasource-provider sqlite
+
+Execute uma migração para criar suas tabelas no banco de dados com o prisma migrate
+1-Sem um banco de dados execute o comando:npx primsa migrate dev --name init
+*Cria um novo arquivo SQL para a migration prisma/migrations
+*E executa a migração no banco de dados
+*Criando os arquivos:dev.db conforme definido no arquivo .env 
+
+Enviando Consultas para o seu banco de dados com o client prisma
+1-Crie um arquivo typescript arquivo.ts e adicionar o seguinte código padrão a ele:
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+
+async function main() {
+  // ... you will write your Prisma Client queries here
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect()
+  })
+  .catch(async (e) => {
+    console.error(e)
+    await prisma.$disconnect()
+    process.exit(1)
+  })
+
+2-Criando um novo usuário:CTRL+SPACE pode ajudar
+async function main() {
+    const user = await prisma.nomedatabela.create({
+        data: {
+            name: 'dave',
+            email:'dave@gmail.com',
+        },
+    })
+    console.log(user)
+}
+*Para criar de fato execute:npx ts-node arquivo.ts
+3-Lendo os dados de bd:
+async function main() {
+    const users = await prisma.user.findMany()
+    console.log(users)
+}
+*Para ler os dados execute:npx ts-node arquivo.ts
+3.1-Lendo dados de relações:
+async function main() {
+    const user =await prisma.nomedatabela.create({
+        data: {
+            name: 'bob',
+            emial: 'bob@.com',
+            posts: {
+                create: {
+                    title: 'Hello',
+                },
+            },
+        },
+    })
+    console.log(user)
+}

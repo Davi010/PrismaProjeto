@@ -10,13 +10,26 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Pessoa{
-  id Int @id @default(autoincrement()) //Estou criando um atributo id do tipo inteiro que é nossa chave primária(@id) e passamos como valor padrão o autoincrement para que para cada novo valor seja adicionado +1 ao atributo id
-  email String @unique //Atributo email do tipo string e de valor unico(@unique),ou seja não terá duplicatas
-  name String? //Atributo nome do tipo string onde não é obrigatório ter(?)
+model Pessoa {
+  id       Int        @id @default(autoincrement()) //Estou criando um atributo id do tipo inteiro que é nossa chave primária(@id) e passamos como valor padrão o autoincrement para que para cada novo valor seja adicionado +1 ao atributo id
+  email    String     @unique //Atributo email do tipo string e de valor unico(@unique),ou seja não terá duplicatas
+  name     String? //Atributo nome do tipo string onde não é obrigatório ter algo(?)
+  enderecos Endereco[]
+}
+
+model Endereco {
+  id       Int     @id @default(autoincrement())
+  rua      String
+  Pessoa   Pessoa? @relation(fields: [pessoaId], references: [id])
+  pessoaId Int?
 }
 
 //npx prisma generate:Gera um modelo em typescript 
 //import { PrismaClient } from '@prisma/client' const prisma = new PrismaClient()
 //import { PrismaClient } from '@prisma/client/edge'const prisma = new PrismaClient()
-
+//npx prisma migrate dev davi init cria o modelo em sql do banco
+//npx ts-node-dev --respawn index.ts inicia o modelo em tempo real
+//npx prisma db push pega os dados do banco de dados
+//para bancos já criados npx prisma init
+//DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public" coloque o banco de dados que já existe na pasta .env
+//npx prisma db pull puxa os dados do bd e os transforma
